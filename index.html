@@ -15,7 +15,7 @@
 </head>
 
 <body>
-	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDUB7SFxSWzRNZ7vdIhqRjdfxqL92Y1IKs&callback=initMap">
+	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDUB7SFxSWzRNZ7vdIhqRjdfxqL92Y1IKs&callback=initMap&libraries=geometry">
 	</script>
 	
 	My zombie map
@@ -29,6 +29,8 @@
 		</form>
 		<script>
 			var zombie_map;
+			var score;
+			var tolerance = 10;
 			var old_position;
 			var all_markers = [];
 			var data = `45.41224268788946 11.734453242187556 emoji/zombie.png
@@ -68,6 +70,21 @@
 						icon: "Google Maps and makers in web page/emoji/smile.png"
 					});
 					old_position = pos;
+					
+					for (var i=0; i < markers.length; i++) {
+						var distance = google.maps.geometry.spherical.computeDistanceBetween(pos, all_markers[i].getPosition());
+						if( distance < tolerance ){
+							var what_is_it = all_markers[i].getIcon();
+							what_is_it = what_is_it.replace(".png", "");
+							alert("Found the "+ what_is_it );
+							all_markers[i].setMap(null);
+							
+							if what_is_it != "zombie" {
+								score += 10;
+								console.log(score)
+							}
+						}
+					}
 				}
 				
 				if(navigator.geolocation) {
