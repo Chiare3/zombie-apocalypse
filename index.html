@@ -29,7 +29,7 @@
 		</form>
 		<script>
 			var zombie_map;
-			
+			var old_position;
 			var all_markers = [];
 			var data = `45.41224268788946 11.734453242187556 emoji/zombie.png
 			45.40452974912013 11.891008417968806 emoji/zombie.png
@@ -53,17 +53,21 @@
 					center: {lat: 45.410893, lng: 11.893755}
 				});
 				
-				old_position =  {lat: 45.410893, lng: 11.893755};
+				old_position =  var pos_marker = new google.maps.Marker({
+						position: {lat: 45.410893, lng: 11.893755},
+						map: zombie_map,
+						icon: "Google Maps and makers in web page/emoji/smile.png"
+					});
 				
 				function set_my_position(position) {
-					
+					old_position.setMap(null);
 					var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 					var pos_marker = new google.maps.Marker({
 						position: pos,
 						map: zombie_map,
 						icon: "Google Maps and makers in web page/emoji/smile.png"
 					});
-					
+					old_position = pos_marker;
 				}
 				
 				if(navigator.geolocation) {
